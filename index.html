@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Bem vindo ao Chat Amizade</title>
+		<link rel="stylesheet" 
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	</head>
+	<body>
+		<div class="container well">
+			<ul id="messages"></ul>
+		</div>
+		<nav class="navbar navbar-inverse navbar-fixed-bottom">
+			<br>
+			<div class="container">
+				<div class="col-md-10">
+					<input 
+						type="text" 
+						class="form-control" 
+						id="text-message" 
+						placeholder="Digite uma mensagem" />
+				</div>
+				<div class="col-md-2">
+					<button 
+						class="btn btn-primary btn-lg" 
+						id="send-button">Enviar</button>
+				</div>
+			</div>
+			<br>
+		</nav>
+		
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+		<script>
+			var socket = io();
+			$('#send-button').on('click', function(){
+				var message = $('#text-message').val();				
+				socket.emit('message', message);
+				
+				$('#text-message').val("")
+				return false;
+			});
+			
+			socket.on('message', function(msg){
+				$('#messages').append($('<li>').text(msg));
+			});
+		</script>
+	</body>
+
+</html>
